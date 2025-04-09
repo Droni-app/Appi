@@ -1,17 +1,12 @@
 <?php
 
 namespace Modules\Codevs\Models;
-use Modules\Codevs\Models\Challenge;
-use App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Codevs\Models\Challenge;
 
-class Submission extends Model
+class Test extends Model
 {
-  public function user()
-  {
-    return $this->belongsTo(User::class);
-  }
   public function challenge()
   {
     return $this->belongsTo(Challenge::class);

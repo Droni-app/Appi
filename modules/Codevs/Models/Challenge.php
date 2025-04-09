@@ -5,7 +5,8 @@ namespace Modules\Codevs\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Site;
-use Modules\Models\Submission;
+use Modules\Codevs\Models\Submission;
+use Modules\Codevs\Models\Test;
 
 class Challenge extends Model
 {
@@ -16,6 +17,10 @@ class Challenge extends Model
   public function site()
   {
     return $this->belongsTo(Site::class);
+  }
+  public function tests()
+  {
+    return $this->hasMany(Test::class);
   }
   public function submissions()
   {
