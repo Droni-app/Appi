@@ -8,7 +8,9 @@ use App\Http\Middleware\SiteMiddleware;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-
-Route::post('/auth/login', [AuthController::class, 'login'])
-    ->middleware(SiteMiddleware::class)
-    ->name('auth.login');
+Route::middleware(SiteMiddleware::class)->group(function () {
+  // Auth Routes
+  Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+  Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth:sanctum');
+  Route::get('/auth/me', [AuthController::class, 'me'])->name('auth.me')->middleware('auth:sanctum');
+});

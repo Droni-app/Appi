@@ -29,10 +29,29 @@ class AuthController extends Controller
           'avatar' => $payload['picture'],
         ]);
       }
+      $user->enrollments()->firstOrCreate(
+        [
+          'site_id' => $request->site->id,
+          'user_id' => $user->id,
+        ],
+      );
       $token = $user->createToken('auth_token');
-      return response()->json(['user' => $user, 'token' => $token->plainTextToken], 200);
-    }
 
+      return response()->json([
+        'user' => $user,
+        'token' => $token,
+        'enrollment' => $user->enrollments()->where('site_id', $request->site->id)->first(),
+      ]);
+    }
     return response()->json(['message' => 'Invalid ID token'], 401);
+  }
+  public function logout(Request $request)
+  {
+    $request->user()->currentAccessToken()->delete();
+    return response()->json(['message' => 'Logged out successfully'], 200);
+  }
+  public function me(Request $request)
+  {
+    return response()->json(['user' => $request->user()], 200);
   }
 }
