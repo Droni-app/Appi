@@ -11,19 +11,14 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('content_posts', function (Blueprint $table) {
+    Schema::create('content_categories', function (Blueprint $table) {
       $table->id();
-      $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
       $table->foreignUuid('site_id')->constrained()->onDelete('cascade');
-      $table->foreignId('category_id')->nullable()->constrained('content_categories')->onDelete('cascade');
       $table->string('slug');
       $table->unique(['site_id', 'slug']);
       $table->string('name');
       $table->text('description')->nullable();
       $table->string('picture')->nullable();
-      $table->text('content')->nullable();
-      $table->string('format')->default('markdown');
-      $table->boolean('active')->default(false);
       $table->timestamps();
     });
   }

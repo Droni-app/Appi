@@ -15,6 +15,5 @@ class ContentServiceProvider extends ServiceProvider
   {
     $this->loadMigrationsFrom(__DIR__.'/../migrations');
     $this->loadRoutesFrom(__DIR__ . '/../routes.php');
-    $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'content');
   }
 }

@@ -4,9 +4,9 @@ namespace Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Category extends Model
 {
-  protected $table = 'content_posts';
+  protected $table = 'content_categories';
   //
   public function user() {
     return $this->belongsTo('App\Models\User');
