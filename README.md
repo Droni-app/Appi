@@ -1,0 +1,48 @@
+## Module Structure
+
+- Base
+  - users
+  - sites
+    - providers
+  - enrollments
+  - auths
+  - attachments
+  - Content
+    - categories
+    - attributes
+    - posts
+  - Social
+    - topics
+    - replies
+    - comments
+    - likes
+    - shares
+  - Marketing
+    - leads
+  - Learning
+    - categories
+    - courses
+    - lessons
+    - questions
+    - quizzes
+    - responses
+  - Payments
+    - transactions
+    - invoices
+  - Notifications
+    - messages
+    - alerts
+  - Settings
+    - preferences
+    - configurations
+
+## to do
+- [ ] Sanctum
+- [ ] Sites
+- [ ] Enrollments
+- [ ] Auths
+- [ ] Attachments
+- [ ] Content
+  - [ ] Categories
+  - [ ] Attributes
+  - [ ] Posts
