@@ -10,6 +10,7 @@ use Modules\Codevs\Models\Test;
 
 class Challenge extends Model
 {
+  protected $table = 'codevs_challenges';
   public function user()
   {
     return $this->belongsTo(User::class);

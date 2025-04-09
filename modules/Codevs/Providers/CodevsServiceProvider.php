@@ -3,6 +3,9 @@
 namespace Modules\Codevs\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use Modules\Codevs\Models\Challenge;
 
 class CodevsServiceProvider extends ServiceProvider
 {
@@ -15,6 +18,9 @@ class CodevsServiceProvider extends ServiceProvider
   {
     $this->loadMigrationsFrom(__DIR__.'/../migrations');
     $this->loadRoutesFrom(__DIR__ . '/../routes.php');
-    $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'content');
+
+    Gate::define('manage-challenge', function (User $user, Challenge $challenge) {
+      return $user->id === $challenge->user_id;
+    });
   }
 }
