@@ -18,6 +18,11 @@ return new class extends Migration
       $table->string('description')->nullable();
       $table->string('logo')->nullable();
       $table->string('icon')->nullable();
+      $table->string('provider')->nullable();
+      $table->string('provider_client_id')->nullable();
+      $table->string('provider_client_secret')->nullable();
+      $table->string('provider_scopes')->nullable();
+      $table->string('provider_token_url')->nullable();
       $table->timestamps();
     });
   }
