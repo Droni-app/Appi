@@ -20,7 +20,8 @@ class CodevsServiceProvider extends ServiceProvider
     $this->loadRoutesFrom(__DIR__ . '/../routes.php');
 
     Gate::define('manage-challenge', function (User $user, Challenge $challenge) {
-      return $user->id === $challenge->user_id;
+      $role = $user->enrollments()->where('site_id', $challenge->site_id)->firstOrfail()->role;
+      return $role === 'admin' || $user->id === $challenge->user_id;
     });
   }
 }

@@ -73,11 +73,8 @@ class ChallengeController extends Controller
    */
   public function update(Request $request, string $slug)
   {
-    $challenge = Challenge::where('site_id', request()->site->id)
-      ->where('slug', $slug)->firstOrFail();
-    if(Gate::denies('manage-challenge', $challenge)) {
-      return response()->json(['message' => 'Unauthorized'], 403);
-    }
+    $challenge = Challenge::where('site_id', request()->site->id)->where('slug', $slug)->firstOrFail();
+    if(Gate::denies('manage-challenge', $challenge)) { return response()->json(['message' => 'Unauthorized'], 403); }
     $request->validate([
       'name' => 'required|string|max:255',
       'description' => 'required|string',
@@ -101,12 +98,8 @@ class ChallengeController extends Controller
    */
   public function destroy(Request $request, string $slug)
   {
-    $challenge = Challenge::where('site_id', request()->site->id)
-      ->where('slug', $slug)
-      ->firstOrFail();
-    if(Gate::denies('manage-challenge', $challenge)) {
-      return response()->json(['message' => 'Unauthorized'], 403);
-    }
+    $challenge = Challenge::where('site_id', request()->site->id)->where('slug', $slug)->firstOrFail();
+    if(Gate::denies('manage-challenge', $challenge)) { return response()->json(['message' => 'Unauthorized'], 403); }
 
     $challenge->delete();
     return response()->json(['message' => 'Challenge deleted successfully']);
