@@ -6,6 +6,8 @@ use App\Http\Middleware\SiteMiddleware;
 use Illuminate\Http\Request;
 
 
-Route::prefix('/api/content')->middleware(SiteMiddleware::class)->group(function () {
-  Route::get('/hola', fn(Request $request) => dd($request->site));
+Route::prefix('/api/content')
+  ->middleware(SiteMiddleware::class)
+  ->group(function () {
+    Route::get('/hola', fn(Request $request) => dd($request->site));
 });

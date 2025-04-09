@@ -13,6 +13,7 @@ return new class extends Migration
   {
     Schema::create('sites', function (Blueprint $table) {
       $table->uuid('id')->primary();
+      $table->string('secret')->nullable();
       $table->string('name');
       $table->string('domain')->unique();
       $table->string('description')->nullable();
@@ -21,8 +22,6 @@ return new class extends Migration
       $table->string('provider')->nullable();
       $table->string('provider_client_id')->nullable();
       $table->string('provider_client_secret')->nullable();
-      $table->string('provider_scopes')->nullable();
-      $table->string('provider_token_url')->nullable();
       $table->timestamps();
     });
   }

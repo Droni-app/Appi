@@ -16,7 +16,6 @@ return new class extends Migration
       $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
       $table->foreignUuid('site_id')->constrained()->onDelete('cascade');
       $table->string('role')->default('user');
-      $table->string('secret')->nullable();
       $table->unique(['user_id', 'site_id']);
       $table->timestamps();
     });

@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
     $site->name = 'Droni.co';
     $site->domain = 'droni.co';
     $site->description = 'Droni.co | Desarrollo inteligente.';
+    $site->provider = 'google';
+    $site->provider_client_id = '213131965361-nt6itpml1c9lseihm352j1ab7nmp27k0.apps.googleusercontent.com';
     $site->save();
   }
 }
