@@ -8,9 +8,7 @@ class AuthController extends Controller
 {
   public function login(Request $request)
   {
-    $request->validate([
-      'siteId' => 'required|exists:sites,id'
-    ]);
+    dd($request->all());
     return response()->json([
       'message' => 'Login successful'
     ]);
