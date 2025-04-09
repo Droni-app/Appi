@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\Site;
+use App\Http\Middleware\SiteMiddleware;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -10,5 +10,5 @@ use App\Http\Middleware\Site;
 
 
 Route::post('/auth/login', [AuthController::class, 'login'])
-    ->middleware(Site::class)
+    ->middleware(SiteMiddleware::class)
     ->name('auth.login');

@@ -5,9 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\Site as SiteModel;
+use App\Models\Site;
+use Illuminate\Support\Facades\Validator;
 
-class Site
+class SiteMiddleware
 {
   /**
    * Handle an incoming request.
@@ -16,10 +17,11 @@ class Site
    */
   public function handle(Request $request, Closure $next): Response
   {
-    $request->validate([
-      'siteId' => 'required|exists:sites,id'
-    ]);
-    $site = SiteModel::findOrFail($request->input('siteId'));
+    $request->headers->set('Accept', 'application/json');
+    Validator::make($request->headers->all(), [
+      'site' => 'required|exists:sites,id'
+    ])->validate();
+    $site = Site::findOrFail($request->header('site'));
     $request->merge(['site' => $site]);
     return $next($request);
   }
