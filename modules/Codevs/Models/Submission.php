@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Submission extends Model
 {
+  protected $table = 'codevs_submissions';
+
   public function user()
   {
     return $this->belongsTo(User::class);

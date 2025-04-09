@@ -20,7 +20,8 @@ class ChallengeController extends Controller
     $challenges = Challenge::where('site_id', $request->site->id)
       ->with(['user'])
       ->orderBy('created_at', 'desc')
-      ->paginate(15);
+      ->paginate(15)
+      ->makeHidden(['content', 'scaffold']);
     return response()->json($challenges);
   }
 
