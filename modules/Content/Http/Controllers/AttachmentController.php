@@ -19,6 +19,9 @@ class AttachmentController extends Controller
   public function index(Request $request)
   {
     $attachments = Attachment::where('site_id', $request->site->id);
+    if(Auth::user()->enrol) {
+      $attachments = $attachments->where('user_id', $request->user_id);
+    }
     if($request->has('search')) {
       $attachments = $attachments->where('name', 'like', '%'.$request->search.'%');
     }
