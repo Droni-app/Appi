@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Middleware\SiteMiddleware;
-use Illuminate\Http\Request;
+use Modules\Content\Http\Controllers\AttachmentController;
 
 
-Route::prefix('/api/content')
-  ->middleware(SiteMiddleware::class)
-  ->group(function () {
-    Route::get('/hola', fn(Request $request) => dd($request->site));
+Route::prefix('/api/content')->middleware(SiteMiddleware::class)->group(function () {
+  /* Public Layer */
+  /* Private Layer */
+  Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('attachments', AttachmentController::class)->only(['index', 'store', 'destroy']);
+  });
 });

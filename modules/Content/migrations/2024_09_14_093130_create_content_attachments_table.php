@@ -11,11 +11,12 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('attachments', function (Blueprint $table) {
+    Schema::create('content_attachments', function (Blueprint $table) {
       $table->uuid('id')->primary();
       $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
       $table->foreignUuid('site_id')->constrained()->onDelete('cascade');
       $table->string('name');
+      $table->string('provider')->nullable();
       $table->string('path');
       $table->string('size');
       $table->string('extension');
@@ -29,6 +30,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('attachments');
+    Schema::dropIfExists('content_attachments');
   }
 };

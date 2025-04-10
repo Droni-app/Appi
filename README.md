@@ -1,11 +1,10 @@
 ## Module Structure
 
 - Base
-  - users
-  - sites
-    - providers
-  - enrollments
-  - auths
+  - users **
+  - sites **
+  - enrollments **
+  - auths **
   - attachments
   - Content
     - categories
@@ -37,10 +36,10 @@
     - configurations
 
 ## to do
-- [ ] Sanctum
-- [ ] Sites
-- [ ] Enrollments
-- [ ] Auths
+- [x] Sanctum
+- [x] Sites
+- [x] Enrollments
+- [x] Auths
 - [ ] Attachments
 - [ ] Content
   - [ ] Categories
