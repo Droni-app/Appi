@@ -40,7 +40,7 @@
 - [x] Sites
 - [x] Enrollments
 - [x] Auths
-- [ ] Attachments
+- [x] Attachments
 - [ ] Content
   - [ ] Categories
   - [ ] Attributes

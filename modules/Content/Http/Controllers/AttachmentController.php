@@ -18,10 +18,8 @@ class AttachmentController extends Controller
    */
   public function index(Request $request)
   {
+    if(Gate::denies('manage-content', $request->site)) { return response()->json(['message' => 'Unauthorized'], 403); }
     $attachments = Attachment::where('site_id', $request->site->id);
-    if(Auth::user()->enrollment) {
-      $attachments = $attachments->where('user_id', $request->user_id);
-    }
     if($request->has('search')) {
       $attachments = $attachments->where('name', 'like', '%'.$request->search.'%');
     }
@@ -38,6 +36,7 @@ class AttachmentController extends Controller
    */
   public function store(Request $request)
   {
+    if(Gate::denies('manage-content', $request->site)) { return response()->json(['message' => 'Unauthorized'], 403); }
     $request->validate([
       'file' => 'required|file|max:5120|mimes:gif,png,jpg,jpeg,pdf,doc,docx,xls,xlsx,ppt,pptx',
       'width' => 'integer',
@@ -77,7 +76,7 @@ class AttachmentController extends Controller
   public function destroy(Request $request, string $id)
   {
     $attachment = Attachment::where('site_id', $request->site->id)->findOrFail($id);
-    if(Gate::denies('manage-attachment', $attachment)) { return response()->json(['message' => 'Unauthorized'], 403); }
+    if(Gate::denies('manage-content', $request->site)) { return response()->json(['message' => 'Unauthorized'], 403); }
 
     Storage::disk('digitalocean')->delete($attachment->path);
     $attachment->delete();

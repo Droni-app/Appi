@@ -103,6 +103,6 @@ class ChallengeController extends Controller
     if(Gate::denies('manage-challenge', $challenge)) { return response()->json(['message' => 'Unauthorized'], 403); }
 
     $challenge->delete();
-    return response()->json(['message' => 'Challenge deleted successfully']);
+    return response()->json($challenge);
   }
 }

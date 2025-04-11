@@ -61,6 +61,6 @@ class ChallengeSubmissionController extends Controller
 
     $submission->delete();
 
-    return response()->json(['message' => 'Submission deleted successfully']);
+    return response()->json($submission);
   }
 }

@@ -51,6 +51,6 @@ class ChallengeTestController extends Controller
     if(Gate::denies('manage-challenge', $challenge)) { return response()->json(['message' => 'Unauthorized'], 403); }
     $test = Test::where('challenge_id', $challenge->id)->where('id', $id)->firstOrFail();
     $test->delete();
-    return response()->json(['message' => 'Test deleted successfully']);
+    return response()->json($test);
   }
 }

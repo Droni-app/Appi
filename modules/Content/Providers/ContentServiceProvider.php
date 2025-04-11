@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Modules\Content\Models\Attachment;
 use App\Models\User;
+use App\Models\Site;
 
 class ContentServiceProvider extends ServiceProvider
 {
@@ -19,9 +20,9 @@ class ContentServiceProvider extends ServiceProvider
     $this->loadMigrationsFrom(__DIR__.'/../migrations');
     $this->loadRoutesFrom(__DIR__ . '/../routes.php');
 
-    Gate::define('manage-attachment', function (User $user, Attachment $attachment) {
-      $role = $user->enrollments()->where('site_id', $attachment->site_id)->firstOrfail()->role;
-      return $role === 'admin' || $user->id === $attachment->user_id;
+    Gate::define('manage-content', function (User $user, Site $site) {
+      $role = $user->enrollments()->where('site_id', $site->id)->firstOrfail()->role;
+      return $role === 'admin';
     });
   }
 }
