@@ -13,6 +13,7 @@ return new class extends Migration
   {
     Schema::create('content_attrs', function (Blueprint $table) {
       $table->id();
+      $table->foreignId('post_id')->constrained('content_posts')->onDelete('cascade');
       $table->string('name');
       $table->string('type')->default('string');
       $table->string('value');

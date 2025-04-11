@@ -30,9 +30,12 @@ class CategoryController extends Controller
       'description' => 'nullable|string',
       'picture' => 'nullable|string',
     ]);
+    $slug = Category::where('site_id', $request->site->id)->where('slug', Str::slug($request->name))->first() ?
+      Str::slug($request->name) . '-' . time() :
+      Str::slug($request->name);
     $category = new Category();
     $category->site_id = $request->site->id;
-    $category->slug = Str::slug($request->name).'-'.Str::random(10);
+    $category->slug = $slug;
     $category->name = $request->name;
     $category->description = $request->description;
     $category->picture = $request->picture;
