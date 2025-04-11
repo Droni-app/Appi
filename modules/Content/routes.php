@@ -5,6 +5,7 @@ use App\Http\Middleware\SiteMiddleware;
 use Modules\Content\Http\Controllers\AttachmentController;
 use Modules\Content\Http\Controllers\CategoryController;
 use Modules\Content\Http\Controllers\PostController;
+use Modules\Content\Http\Controllers\PostAttrController;
 
 
 Route::prefix('/api/content')->middleware(SiteMiddleware::class)->group(function () {
@@ -16,5 +17,6 @@ Route::prefix('/api/content')->middleware(SiteMiddleware::class)->group(function
     Route::apiResource('attachments', AttachmentController::class)->only(['index', 'store', 'destroy']);
     Route::apiResource('categories', CategoryController::class)->only(['store', 'update', 'destroy']);
     Route::apiResource('posts', PostController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('posts.attrs', PostAttrController::class)->only(['store', 'destroy']);
   });
 });

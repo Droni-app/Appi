@@ -37,7 +37,7 @@ class PostController extends Controller
     if(Gate::denies('manage-content', $request->site)) {
       $posts = $posts->where('active', true);
     }
-    $posts = $posts->orderBy('created_at', 'desc')->with(['category', 'user', 'attrs'])->paginate($filters['perPage']);
+    $posts = $posts->orderBy('created_at', 'desc')->with(['category', 'user'])->paginate($filters['perPage']);
     return response()->json($posts);
   }
 
