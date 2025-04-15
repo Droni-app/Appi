@@ -28,7 +28,7 @@ class CommentController extends Controller
     ];
     $comments = Comment::with(['user', 'parent', 'children' => function($query) use ($request) {
       if(Gate::denies('manage-social', $request->site)) {
-        $query->whereNotNull('approved_at');
+        $query->whereNotNull('approved_at')->with('user');
       }
     }])
       ->where('site_id', $request->site->id)
