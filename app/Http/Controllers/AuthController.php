@@ -28,6 +28,12 @@ class AuthController extends Controller
           'provider_id' => $payload['sub'],
           'avatar' => $payload['picture'],
         ]);
+      } else {
+        $user->update([
+          'name' => $payload['name'],
+          'email_verified_at' => $payload['email_verified'] ? now() : null,
+          'avatar' => $payload['picture'],
+        ]);
       }
       $user->enrollments()->firstOrCreate(
         [
@@ -52,6 +58,9 @@ class AuthController extends Controller
   }
   public function me(Request $request)
   {
-    return response()->json(['user' => $request->user()], 200);
+    $user = $request->user()->load(['enrollments' => function($query) use ($request) {
+      $query->where('site_id', $request->site->id);
+    }]);
+    return response()->json($user, 200);
   }
 }
