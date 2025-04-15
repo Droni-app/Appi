@@ -27,8 +27,9 @@ class CommentController extends Controller
       'perPage' => $request->input('perPage', 10),
     ];
     $comments = Comment::with(['user', 'parent', 'children' => function($query) use ($request) {
+      $query->with(['user']);
       if(Gate::denies('manage-social', $request->site)) {
-        $query->whereNotNull('approved_at')->with('user');
+        $query->whereNotNull('approved_at');
       }
     }])
       ->where('site_id', $request->site->id)
