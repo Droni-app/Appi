@@ -68,7 +68,7 @@ class CommentController extends Controller
     /* find comementable */
     $commentable = $commentables[$request->commentable]::where('site_id', $request->site->id)->findOrFail($request->commentable_id);
 
-    $parent = Comment::where('site_id', $request->site->id)->find($request->parent_id);
+    $parent = Comment::where('site_id', $request->site->id)->whereNull('parent_id')->find($request->parent_id);
 
     $comment = new Comment();
     $comment->site_id = $request->site->id;
