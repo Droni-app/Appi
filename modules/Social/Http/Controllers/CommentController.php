@@ -91,12 +91,10 @@ class CommentController extends Controller
   {
     if(Gate::denies('manage-social', $request->site)) { return response()->json(['message' => 'Unauthorized'], 403); }
     $request->validate([
-      'content' => 'string|max:1000',
       'approved' => 'nullable|boolean',
     ]);
     $comment = Comment::where('site_id', $request->site->id)->findOrFail($id);
 
-    $comment->content = $request->content;
     $comment->approved_at = $request->approved ? now() : null;
     $comment->save();
     return response()->json($comment);
