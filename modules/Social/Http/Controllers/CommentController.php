@@ -26,7 +26,11 @@ class CommentController extends Controller
     $filters = [
       'perPage' => $request->input('perPage', 10),
     ];
-    $comments = Comment::with(['user', 'children', 'parent'])
+    $comments = Comment::with(['user', 'parent', 'children' => function($query) use ($request) {
+      if(Gate::denies('manage-social', $request->site)) {
+        $query->whereNotNull('approved_at');
+      }
+    }])
       ->where('site_id', $request->site->id)
       ->orderBy('created_at', 'desc');
 
@@ -86,7 +90,7 @@ class CommentController extends Controller
   {
     if(Gate::denies('manage-social', $request->site)) { return response()->json(['message' => 'Unauthorized'], 403); }
     $request->validate([
-      'content' => 'required|string|max:1000',
+      'content' => 'string|max:1000',
       'approved' => 'nullable|boolean',
     ]);
     $comment = Comment::where('site_id', $request->site->id)->findOrFail($id);

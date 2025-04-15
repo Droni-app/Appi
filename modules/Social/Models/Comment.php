@@ -32,6 +32,6 @@ class Comment extends Model
 
   public function children()
   {
-    return $this->hasMany(Comment::class, 'parent_id')->whereNotNull('approved_at');
+    return $this->hasMany(Comment::class, 'parent_id');
   }
 }
