@@ -37,6 +37,9 @@ class ChallengeController extends Controller
       'scaffold' => 'required|string',
       'funcName' => 'required|string|max:100',
       'level' => 'required|integer|min:0|max:5',
+      'tests' => 'required|array|min:5',
+      'tests.*.input' => 'required|string',
+      'tests.*.output' => 'required|string',
     ]);
 
     $challenge = new Challenge();
@@ -51,6 +54,14 @@ class ChallengeController extends Controller
     $challenge->level = $request->level;
 
     $challenge->save();
+
+    // Attach tests to the challenge
+    foreach ($request->tests as $test) {
+      $challenge->tests()->create([
+        'input' => $test['input'],
+        'output' => $test['output'],
+      ]);
+    }
     $challenge->load(['user', 'site']);
 
     return response()->json($challenge);
