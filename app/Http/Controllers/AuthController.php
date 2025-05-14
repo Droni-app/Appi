@@ -12,6 +12,23 @@ class AuthController extends Controller
   public function login(Request $request)
   {
     $request->validate([
+      'email' => 'required|email',
+      'password' => 'required|string'
+    ]);
+    $user = User::where('email', $request->email)->first();
+    if ($user && password_verify($request->password, $user->password)) {
+      $token = $user->createToken('auth_token');
+      return response()->json([
+        'user' => $user,
+        'token' => $token,
+        'enrollment' => $user->enrollments()->where('site_id', $request->site->id)->first(),
+      ]);
+    }
+    return response()->json(['message' => 'Invalid credentials'], 401);
+  }
+  public function loginProvider(Request $request)
+  {
+    $request->validate([
       'id_token' => 'required|string'
     ]);
     $client = new Google_Client(['client_id' => $request->site->provider_client_id]);

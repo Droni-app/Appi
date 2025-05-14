@@ -30,7 +30,6 @@
         <div class="pt-4">
           <DuiButton
             type="submit"
-            variant="solid"
             color="primary"
             :loading="loading"
             block
@@ -52,7 +51,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { DuiInput, DuiButton } from '@dronico/droni-kit'
 import { login } from '../utils/auth'
-import axios from 'axios'
+import appi from '../utils/appi'
 
 const router = useRouter()
 const loading = ref(false)
@@ -104,10 +103,16 @@ const handleLogin = async () => {
     loading.value = true
 
     // Hacer petición al servidor para autenticar
-    const response = await axios.post('/api/auth/login', {
-      site_id: form.siteId,
+    const response = await appi.post('/auth/login', {
       email: form.email,
       password: form.password
+    },
+    {
+      // headers
+      headers: {
+        'Content-Type': 'application/json',
+        'site': form.siteId
+      },
     })
 
     // Si la autenticación es exitosa, guardar token y redirigir
