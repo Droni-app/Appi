@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { authMiddleware } from './utils/auth'
 
 // 1. Cargar todos los archivos .vue de src/pages
 const pages = import.meta.glob('/resources/js/pages/**/*.vue')
@@ -14,10 +15,16 @@ for (const path in pages) {
   const routePath = fileName.toLowerCase().endsWith('/index') ? fileName.slice(0, -6) : fileName
 
   routes.push({
-    path: routePath,
+    path: '/app' + routePath,
     component: pages[path],
   })
 }
+
+// Agregar rutas adicionales
+routes.push({
+  path: '/',
+  redirect: '/app/login'
+})
 
 // 3. Crear el router
 export const router = createRouter({
@@ -25,3 +32,5 @@ export const router = createRouter({
   routes,
 })
 
+// 4. Agregar middleware de autenticación global
+router.beforeEach(authMiddleware)
