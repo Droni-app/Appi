@@ -23,7 +23,7 @@ for (const path in pages) {
 // Agregar rutas adicionales
 routes.push({
   path: '/',
-  redirect: '/app/login'
+  redirect: '/app/auth/login'
 })
 
 // 3. Crear el router
