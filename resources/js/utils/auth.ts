@@ -33,18 +33,14 @@ export const authMiddleware = (
   return next()
 }
 
-// Función para iniciar sesión y guardar token
-export const login = (token: string) => {
-  sessionStorage.setItem('token', token)
-}
-
 // Función para cerrar sesión
 export const logout = () => {
   sessionStorage.removeItem('token')
+  sessionStorage.removeItem('user')
 }
 
 // Función para verificar si el usuario está autenticado
-export const isAuthenticated = (): boolean => {
-  return !!sessionStorage.getItem('token')
+export const user = (): AuthUser => {
+  return JSON.parse(sessionStorage.getItem('user') || '{}')
 }
 
