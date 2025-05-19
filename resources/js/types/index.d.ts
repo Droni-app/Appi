@@ -92,6 +92,22 @@ declare global {
     updated_at: string
   }
 
+  export interface ContentAttachment {
+    user_id: string
+    site_id: string
+    name: string
+    path: string
+    provider: string
+    size: number
+    extension: string
+    mime_type: string
+    id: string
+    updated_at: string
+    created_at: string
+    url: string
+  }
+
+
 
 
 }

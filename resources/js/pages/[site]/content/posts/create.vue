@@ -9,7 +9,13 @@
           <div class="flex-1 space-y-4">
             <DuiInput v-model="form.name" label="Título" required class="w-full" />
             <DuiTextarea v-model="form.description" label="Descripción" rows="2" class="w-full" />
-            <DuiInput v-model="form.picture" label="Imagen destacada (URL)" class="w-full" />
+            <AttachmentInput
+              v-model="form.picture"
+              label="Imagen destacada"
+              :siteId="siteId"
+              accept="image/*"
+              :resize="{ width: 1200, height: 630 }"
+            />
             <div>
               <label class="block font-medium mb-1">Formato</label>
               <select v-model="form.format" class="dui-input w-full">
@@ -50,6 +56,7 @@
 </template>
 <script setup lang="ts">
 import AdminMenu from '@/components/AdminMenu.vue';
+import AttachmentInput from '@/components/AttachmentInput.vue';
 import { ref, onMounted, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import appi from '@/utils/appi';
