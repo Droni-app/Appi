@@ -10,7 +10,6 @@ appi.interceptors.request.use(
   config => {
     // Agregar token, por ejemplo
     const token = sessionStorage.getItem('token')
-    console.log('token', token)
     if (token) {
       const accessToken = JSON.parse(String(token))
       config.headers.Authorization = `Bearer ${accessToken.plainTextToken}`

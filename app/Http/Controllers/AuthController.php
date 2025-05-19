@@ -59,7 +59,7 @@ class AuthController extends Controller
   public function me(Request $request)
   {
     $user = $request->user()->load(['enrollments' => function($query) use ($request) {
-      $query->where('site_id', $request->site->id);
+      $query->with('site');
     }]);
     return response()->json($user, 200);
   }
