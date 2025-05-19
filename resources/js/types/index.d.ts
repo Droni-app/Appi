@@ -107,6 +107,18 @@ declare global {
     url: string
   }
 
+  export interface ContentCategory {
+    id: number
+    site_id: string
+    slug: string
+    name: string
+    description: string
+    picture: string
+    created_at: string
+    updated_at: string
+  }
+
+
 
 
 

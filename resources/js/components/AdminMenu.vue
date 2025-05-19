@@ -60,9 +60,8 @@ const props = defineProps({
 const menu = [
   { name: 'Home', path: '/' },
   { name: 'Content', path: '#', items: [
-      { name: 'Categories', path: '/' },
+      { name: 'Categories', path: '/content/categories' },
       { name: 'Posts', path: '/content/posts' },
-      { name: 'Attachments', path: '/' },
     ],
   },
 ]
