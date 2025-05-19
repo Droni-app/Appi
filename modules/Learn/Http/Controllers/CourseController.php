@@ -18,7 +18,7 @@ class CourseController extends Controller
       'perPage' => $request->input('perPage', 10),
       'q' => $request->input('q', null),
     ];
-    $courses = Course::where('site_id', $request->site_id)
+    $courses = Course::where('site_id', $request->site->id)
       ->orderBy('created_at', 'desc')
       ->paginate($filters['perPage']);
 
@@ -35,12 +35,12 @@ class CourseController extends Controller
     $request->validate([
       'category' => 'nullable|string|max:100',
       'name' => 'required|string|max:255|min:5',
-      'description' => 'nullable|string',
+      'description' => 'required|string',
     ]);
 
     $course = new Course();
     $course->user_id = $request->user()->id;
-    $course->site_id = $request->site_id;
+    $course->site_id = $request->site->id;
     $course->category = $request->category;
     $course->slug = Str::slug($request->name, '-').'-' . Str::random(4);
     $course->name = $request->name;
@@ -59,7 +59,7 @@ class CourseController extends Controller
    */
   public function show(string $slug)
   {
-    $course = Course::where('site_id', request()->site_id)->where('slug', $slug)->firstOrFail();
+    $course = Course::where('site_id', request()->site->id)->where('slug', $slug)->firstOrFail();
     return response()->json($course);
   }
 
@@ -97,7 +97,7 @@ class CourseController extends Controller
   {
     if(Gate::denies('manage-learn', request()->site)) { return response()->json(['message' => 'Unauthorized'], 403); }
 
-    $course = Course::where('site_id', request()->site_id)->where('slug', $slug)->firstOrFail();
+    $course = Course::where('site_id', request()->site->id)->where('slug', $slug)->firstOrFail();
     $course->delete();
     return response()->json($course);
   }

@@ -141,9 +141,19 @@ declare global {
     parent?: SocialComment
     children: SocialComment[]
   }
-
-
-
-
-
+  export interface LearnCourse {
+    id: number
+    site_id: string
+    user_id: string
+    category: any
+    slug: string
+    name: string
+    icon: any
+    picture: any
+    video: any
+    description: string
+    open: number
+    created_at: string
+    updated_at: string
+  }
 }
