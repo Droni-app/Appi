@@ -44,5 +44,54 @@ declare global {
     updated_at: string
   }
 
+  export interface Pagination<T extends Iterable<unknown>> {
+    data: T
+    current_page?: number
+    from?: number
+    last_page?: number
+    per_page?: number
+    to?: number
+    total?: number
+  }
+
+  export interface Post {
+    id: number
+    user_id: string
+    site_id: string
+    category_id: number
+    slug: string
+    name: string
+    description: string
+    picture: string
+    content: string
+    format: string
+    active: number
+    created_at: string
+    updated_at: string
+    category: Category
+    user: User
+  }
+
+  export interface Category {
+    id: number
+    site_id: string
+    slug: string
+    name: string
+    description: string
+    picture: string
+    created_at: string
+    updated_at: string
+  }
+
+  export interface User {
+    id: string
+    name: string
+    email: string
+    avatar: string
+    created_at: string
+    updated_at: string
+  }
+
+
 
 }

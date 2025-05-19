@@ -7,7 +7,6 @@
             class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none flex items-center gap-1"
             type="button"
             @click="toggleDropdown(idx)"
-            @blur="closeDropdown"
             :aria-expanded="openDropdown === idx"
           >
             {{ item.name }}
@@ -61,9 +60,9 @@ const props = defineProps({
 const menu = [
   { name: 'Home', path: '/' },
   { name: 'Content', path: '#', items: [
-      { name: 'Categories', path: '/content/categories' },
+      { name: 'Categories', path: '/' },
       { name: 'Posts', path: '/content/posts' },
-      { name: 'Attachments', path: '/content/attachments' },
+      { name: 'Attachments', path: '/' },
     ],
   },
 ]

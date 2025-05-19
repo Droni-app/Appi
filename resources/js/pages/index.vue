@@ -8,7 +8,6 @@
             <RouterLink :to="`/app/${enrollment.site_id}`" class="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">
               {{ enrollment.site?.name || 'Sitio' }}
             </RouterLink>
-            <h2 class="text-lg font-semibold">{{ enrollment.site?.name || 'Sitio' }}</h2>
             <p class=" text-sm text-gray-500">
               {{ enrollment.site?.domain }} |
               Rol: <span class="font-medium">{{ enrollment.role }}</span>
