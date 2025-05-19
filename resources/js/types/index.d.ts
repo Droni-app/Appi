@@ -126,6 +126,21 @@ declare global {
     created_at: string
     updated_at: string
   }
+  export interface SocialComment {
+    id: number
+    site_id: string
+    commentable_type: string
+    commentable_id: string
+    user_id: string
+    parent_id?: string
+    content: string
+    approved_at: string
+    created_at: string
+    updated_at: string
+    user: User
+    parent?: SocialComment
+    children: SocialComment[]
+  }
 
 
 

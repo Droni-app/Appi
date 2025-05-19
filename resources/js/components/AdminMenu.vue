@@ -64,6 +64,10 @@ const menu = [
       { name: 'Posts', path: '/content/posts' },
     ],
   },
+  { name: 'Social', path: '#', items: [
+      { name: 'Comments', path: '/social/comments' },
+    ],
+  },
 ]
 
 const openDropdown = ref<number|null>(null)
