@@ -5,13 +5,19 @@
         <div class="flex items-center gap-3 mb-4">
           <img v-if="enrollment.site && enrollment.site.logo" :src="enrollment.site.logo" alt="Logo" class="w-10 h-10 rounded-full object-cover border" />
           <div>
+            <RouterLink :to="`/app/${enrollment.site_id}`" class="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">
+              {{ enrollment.site?.name || 'Sitio' }}
+            </RouterLink>
             <h2 class="text-lg font-semibold">{{ enrollment.site?.name || 'Sitio' }}</h2>
-            <p class="text-xs text-gray-500">{{ enrollment.site?.domain }}</p>
+            <p class=" text-sm text-gray-500">
+              {{ enrollment.site?.domain }} |
+              Rol: <span class="font-medium">{{ enrollment.role }}</span>
+            </p>
+            <p class="text-gray-500">
+              {{ enrollment.site?.description || 'No hay descripción' }}
+            </p>
           </div>
         </div>
-        <p class="text-gray-600 mb-2">Rol: <span class="font-medium">{{ enrollment.role }}</span></p>
-        <p class="text-xs text-gray-400 mb-2">Creado: {{ enrollment.created_at }}</p>
-        <p class="text-xs text-gray-400 mb-2">Descripción: {{ enrollment.site?.description }}</p>
       </div>
     </div>
     <div v-else-if="me && me.enrollments && !me.enrollments.length" class="mt-8 text-gray-500 text-center">

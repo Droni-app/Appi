@@ -12,7 +12,9 @@ for (const path in pages) {
     .replace(/^.*\/pages/, '')
     .replace(/\.vue$/, '')
 
-  const routePath = fileName.toLowerCase().endsWith('/index') ? fileName.slice(0, -6) : fileName
+  // Reemplaza carpetas tipo [param] por :param para rutas dinámicas estilo Nuxt
+  const nuxtStylePath = fileName.replace(/\[(\w+)\]/g, ':$1')
+  const routePath = nuxtStylePath.toLowerCase().endsWith('/index') ? nuxtStylePath.slice(0, -6) : nuxtStylePath
 
   routes.push({
     path: '/app' + routePath,
