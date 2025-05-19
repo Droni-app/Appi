@@ -183,11 +183,11 @@ const submitReply = async () => {
       'Modules\\Content\\Models\\Post': 'content_post',
       'Modules\\CodeVs\\Models\\Challenge': 'codevs_challenge'
     };
-    
+
     // Obtenemos la clave del comentable a partir del tipo completo
     const commentableType = props.comment.commentable_type;
     const commentable = commentableTypeMapping[commentableType];
-    
+
     if (!commentable) {
       console.error(`Tipo de comentario no reconocido: ${commentableType}`);
       return;
