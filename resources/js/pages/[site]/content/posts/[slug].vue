@@ -49,6 +49,71 @@
             <DuiTextarea v-model="form.content" label="Contenido" rows="14" required />
           </div>
         </div>
+
+        <!-- Sección de Atributos -->
+        <div class="mt-8">
+          <h2 class="text-xl font-bold mb-4">Atributos del Post</h2>
+          <div class="bg-gray-50 p-4 rounded-md mb-4">
+            <div class="flex flex-wrap gap-4 mb-4">
+              <DuiInput
+                v-model="newAttr.name"
+                placeholder="Nombre"
+                class="flex-1 min-w-[200px]"
+              />
+              <DuiSelect
+                v-model="newAttr.type"
+                placeholder="Tipo"
+                :options="attrTypeOptions"
+                class="flex-1 min-w-[200px]"
+              />
+              <DuiInput
+                v-model="newAttr.value"
+                placeholder="Valor"
+                class="flex-1 min-w-[200px]"
+              />
+              <DuiButton
+                type="button"
+                color="primary"
+                @click="addAttribute"
+                size="sm"
+              >
+                <i class="mdi mdi-plus mr-1"></i>
+                Agregar atributo
+              </DuiButton>
+            </div>
+          </div>
+
+          <!-- Lista de atributos existentes -->
+          <div v-if="!form.attrs || form.attrs.length === 0" class="text-center py-4 bg-gray-50 rounded-md">
+            <p class="text-gray-500">No hay atributos definidos para este post</p>
+          </div>
+          <div v-else class="border rounded-lg overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
+                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-for="(attr, index) in form.attrs" :key="attr.id || index" class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ attr.name }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ attr.type }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ attr.value }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button type="button" @click="removeAttribute(index)" class="text-red-600 hover:text-red-900">
+                      <i class="mdi mdi-delete"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- No hay modal para editar ya que no existe esa funcionalidad en la API -->
+        </div>
         <div v-if="error" class="text-red-500">{{ error }}</div>
         <div v-if="success" class="text-green-600">{{ success }}</div>
         <div class="flex justify-between">
@@ -76,7 +141,7 @@ const router = useRouter();
 const siteId = route.params['site'] as string;
 const slug = route.params['slug'] as string;
 
-const post = ref<Post | null>(null);
+const post = ref<ContentPost | null>(null);
 const categories = ref<Category[]>([]);
 const loading = ref(true);
 const submitting = ref(false);
@@ -91,6 +156,26 @@ const categoryOptions = computed(() =>
   }))
 );
 
+// Opciones para tipos de atributos
+const attrTypeOptions = [
+  { value: 'text', label: 'Texto' },
+  { value: 'number', label: 'Número' },
+  { value: 'boolean', label: 'Boolean' },
+  { value: 'date', label: 'Fecha' },
+  { value: 'url', label: 'URL' },
+  { value: 'color', label: 'Color' },
+  { value: 'json', label: 'JSON' }
+];
+
+// Estado para la gestión de atributos
+const newAttr = reactive({
+  name: '',
+  type: 'text',
+  value: ''
+});
+
+// No necesitamos variables para edición ya que no existe esa funcionalidad en la API
+
 const form = reactive({
   name: '',
   description: '',
@@ -99,6 +184,7 @@ const form = reactive({
   format: 'markdown',
   category: '',
   active: false,
+  attrs: [] as ContentAttr[],
 });
 
 const getCategories = async () => {
@@ -115,7 +201,7 @@ const getCategories = async () => {
 const getPost = async () => {
   loading.value = true;
   try {
-    const response = await appi.get<Post>(`/content/posts/${slug}`, {
+    const response = await appi.get<ContentPost>(`/content/posts/${slug}`, {
       headers: { site: siteId },
     });
     post.value = response.data;
@@ -128,6 +214,7 @@ const getPost = async () => {
     form.format = post.value.format;
     form.category = post.value.category.slug;
     form.active = post.value.active === 1;
+    form.attrs = post.value.attrs || [];
   } catch (e: any) {
     error.value = e?.response?.data?.message || 'Error al cargar el post';
     console.error('Error al cargar el post:', e);
@@ -135,6 +222,86 @@ const getPost = async () => {
     loading.value = false;
   }
 };
+
+// Función para agregar un nuevo atributo
+const addAttribute = async () => {
+  if (!newAttr.name.trim() || !newAttr.value.trim()) {
+    // Validación simple
+    error.value = 'Nombre y valor del atributo son requeridos';
+    setTimeout(() => {
+      error.value = '';
+    }, 3000);
+    return;
+  }
+
+  try {
+    // Crear nuevo atributo usando el endpoint específico
+    const attrData = {
+      name: newAttr.name.trim(),
+      type: newAttr.type,
+      value: newAttr.value.trim()
+    };
+
+    loading.value = true;
+
+    // Llamar al endpoint POST para crear el atributo
+    const response = await appi.post(`/content/posts/${slug}/attrs`, attrData, {
+      headers: { site: siteId },
+    });
+
+    // Agregar el atributo recibido a la lista (con su ID asignado por el backend)
+    if (!form.attrs) form.attrs = [];
+    form.attrs.push(response.data);
+
+    // Mostrar mensaje de éxito
+    success.value = 'Atributo agregado correctamente';
+    setTimeout(() => {
+      success.value = '';
+    }, 3000);
+
+    // Limpiar el formulario
+    newAttr.name = '';
+    newAttr.type = 'text';
+    newAttr.value = '';
+  } catch (e: any) {
+    error.value = e?.response?.data?.message || 'Error al crear el atributo';
+    console.error('Error al crear el atributo:', e);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Función para remover un atributo
+const removeAttribute = async (index: number) => {
+  if (form.attrs && index >= 0 && index < form.attrs.length) {
+    const attrId = form.attrs[index].id;
+
+    try {
+      loading.value = true;
+
+      // Llamar al endpoint DELETE para eliminar el atributo
+      await appi.delete(`/content/posts/${slug}/attrs/${attrId}`, {
+        headers: { site: siteId },
+      });
+
+      // Eliminar de la lista local
+      form.attrs.splice(index, 1);
+
+      // Mostrar mensaje de éxito
+      success.value = 'Atributo eliminado correctamente';
+      setTimeout(() => {
+        success.value = '';
+      }, 3000);
+    } catch (e: any) {
+      error.value = e?.response?.data?.message || 'Error al eliminar el atributo';
+      console.error('Error al eliminar el atributo:', e);
+    } finally {
+      loading.value = false;
+    }
+  }
+};
+
+// No se incluyen funciones de edición ya que la API no lo soporta
 
 const goBack = () => {
   router.back();
@@ -145,10 +312,16 @@ const handleSubmit = async () => {
   success.value = '';
   submitting.value = true;
   try {
+    // No incluimos los atributos en la actualización del post ya que se gestionan por separado
     await appi.put(`/content/posts/${slug}`, {
-      ...form,
+      name: form.name,
+      description: form.description,
+      picture: form.picture,
+      content: form.content,
+      format: form.format,
+      category: form.category,
       site_id: siteId,
-      active: form.active ? 1 : 0,
+      active: form.active ? 1 : 0
     }, {
       headers: { site: siteId },
     });

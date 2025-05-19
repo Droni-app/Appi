@@ -152,7 +152,7 @@ const filters = ref({
   page: 1
 });
 
-const posts = ref<Pagination<Post[]>>({
+const posts = ref<Pagination<ContentPost[]>>({
   data: [],
   current_page: 1,
   last_page: 1,
@@ -168,7 +168,7 @@ const getPosts = async () => {
   loading.value = true;
   try {
     const filtersParams = new URLSearchParams(filters.value as any).toString();
-    const response = await appi.get<Pagination<Post[]>>(`/content/posts?${filtersParams}`, {
+    const response = await appi.get<Pagination<ContentPost[]>>(`/content/posts?${filtersParams}`, {
       headers: {
         site: siteId,
       },

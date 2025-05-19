@@ -54,7 +54,7 @@ declare global {
     total?: number
   }
 
-  export interface Post {
+  export interface ContentPost {
     id: number
     user_id: string
     site_id: string
@@ -68,8 +68,17 @@ declare global {
     active: number
     created_at: string
     updated_at: string
-    category: Category
+    category: ContentCategory
     user: User
+    attrs?: ContentAttr[]
+  }
+
+  export interface ContentAttr {
+    id: number
+    post_id: number
+    name: string
+    type: string
+    value: string
   }
 
   export interface Category {
