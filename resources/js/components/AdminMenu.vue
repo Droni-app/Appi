@@ -72,6 +72,11 @@ const menu = [
       { name: 'Courses', path: '/learn/courses' },
     ],
   },
+  { name: 'Settings', path: '#', items: [
+      { name: 'Site', path: `/edit` },
+      { name: 'Users', path: '/' },
+    ],
+  }
 ]
 
 const openDropdown = ref<number|null>(null)
