@@ -118,7 +118,7 @@ const updateLesson = async () => {
 const deleteLesson = async ()=>{
   deleting.value=true;
   try{ await appi.delete(`/learn/courses/${courseSlug}/lessons/${lessonSlug}`,{headers:{site:siteId}});
-    router.push(`/${siteId}/learn/courses/${courseSlug}/lessons`);
+    router.push(`/app/${siteId}/learn/courses/${courseSlug}/lessons`);
   }catch(e){console.error(e);}finally{deleting.value=false;deleteModal.value=false;}
 };
 

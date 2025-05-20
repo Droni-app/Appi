@@ -14,13 +14,26 @@ class CourseController extends Controller
    */
   public function index(Request $request)
   {
-    $filters = [
-      'perPage' => $request->input('perPage', 10),
-      'q' => $request->input('q', null),
-    ];
-    $courses = Course::where('site_id', $request->site->id)
-      ->orderBy('created_at', 'desc')
-      ->paginate($filters['perPage']);
+    $perPage = $request->input('perPage', 10);
+    $query = Course::where('site_id', $request->site->id);
+    // Filter by search keyword
+    if ($request->filled('q')) {
+      $search = $request->input('q');
+      $query->where(function($q) use ($search) {
+        $q->where('name', 'like', "%{$search}%")
+          ->orWhere('description', 'like', "%{$search}%");
+      });
+    }
+    // Filter by open status
+    if ($request->filled('open')) {
+      $query->where('open', $request->boolean('open'));
+    }
+    // Filter by category
+    if ($request->filled('category')) {
+      $category = $request->input('category');
+      $query->where('category', 'like', "%{$category}%");
+    }
+    $courses = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
     return response()->json($courses);
   }

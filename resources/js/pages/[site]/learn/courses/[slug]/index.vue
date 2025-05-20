@@ -86,6 +86,15 @@
             />
           </div>
 
+          <!-- Categoría -->
+          <div class="col-span-1">
+            <DuiInput
+              v-model="course.category"
+              label="Categoría"
+              placeholder="Escribe la categoría"
+            />
+          </div>
+
           <!-- Icono -->
           <div class="col-span-1 space-y-2">
             <label class="block text-sm font-medium text-gray-700">Icono</label>

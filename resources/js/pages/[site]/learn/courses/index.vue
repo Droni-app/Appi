@@ -38,6 +38,13 @@
           @change="getCourses"
           class="w-48"
         />
+        <!-- Filtrar por categoría -->
+        <DuiInput
+          v-model="filters.category"
+          placeholder="Categoría"
+          @input="handleSearch"
+          class="w-48"
+        />
       </div>
 
       <!-- Indicador de carga -->
@@ -64,17 +71,23 @@
             <div v-else class="w-full h-48 bg-gray-200 flex items-center justify-center">
               <i class="mdi mdi-image-off text-4xl text-gray-400"></i>
             </div>
-            <div
-              v-if="course.open"
-              class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full"
-            >
-              Abierto
-            </div>
-            <div
-              v-else
-              class="absolute top-2 right-2 bg-gray-500 text-white text-xs px-2 py-1 rounded-full"
-            >
-              Cerrado
+            <!-- Status and category pills -->
+            <div class="absolute top-2 right-2 flex space-x-2">
+              <span
+                class="text-white text-xs px-2 py-1 rounded-full"
+                :class="course.open ? 'bg-green-500' : 'bg-gray-500'"
+              >
+                <i class="mdi mdi-lock-outline mr-1"></i>
+                {{ course.open ? 'Abierto' : 'Cerrado' }}
+              </span>
+              <span
+                v-if="course.category"
+                class="text-white text-xs px-2 py-1 rounded-full"
+                :class="getCategoryClass(course.category)"
+              >
+                <i class="mdi mdi-tag-outline mr-1"></i>
+                {{ course.category }}
+              </span>
             </div>
           </div>
 
@@ -165,6 +178,7 @@ const filters = reactive({
   perPage: 12,
   page: 1,
   open: '',
+  category: '',
 });
 
 const courses = ref<Pagination<LearnCourse[]>>({
@@ -245,6 +259,19 @@ const formatDate = (dateString: string) => {
     month: 'short',
     day: 'numeric',
   });
+};
+
+// Function to get a color class for a category
+const getCategoryClass = (category: string) => {
+  // Define available bg color classes
+  const colors = ['bg-blue-500','bg-slate-500','bg-purple-500','bg-red-500','bg-yellow-500'];
+  // Simple hash to map category to index
+  let hash = 0;
+  for (let i = 0; i < category.length; i++) {
+    hash = category.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
 };
 
 onMounted(() => {

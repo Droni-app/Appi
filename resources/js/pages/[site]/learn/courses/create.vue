@@ -13,6 +13,14 @@
 
       <form @submit.prevent="saveCourse" class="bg-white p-6 rounded-lg shadow-md">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Categoría -->
+          <div class="col-span-1">
+            <DuiInput
+              v-model="course.category"
+              label="Categoría"
+              placeholder="Escribe la categoría"
+            />
+          </div>
           <!-- Nombre del curso -->
           <div class="col-span-1">
             <DuiInput
@@ -115,6 +123,7 @@ const siteId = route.params['site'] as string;
 
 // Estado del curso
 const course = ref<Partial<LearnCourse>>({
+  category: '',
   name: '',
   description: '',
   open: 1,
