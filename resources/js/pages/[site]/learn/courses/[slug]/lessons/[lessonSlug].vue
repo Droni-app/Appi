@@ -33,12 +33,21 @@
             <DuiInput v-model="lesson.live" label="URL Live (opcional)" placeholder="https://..." />
             <DuiInput v-model="lesson.live_date" label="Fecha Live" type="date" />
             <DuiTextarea v-model="lesson.description" label="Descripción" rows="3" />
-            <DuiTextarea v-model="lesson.content" label="Contenido" rows="6" />
-            <div class="flex items-center space-x-2">
-              <input type="checkbox" id="is_activity" v-model="lesson.is_activity" class="dui-checkbox mr-2 h-5 w-5 text-blue-600 focus:ring-blue-500" />
-              <label for="is_activity" class="text-sm font-medium">Actividad?</label>
+            <div class="col-span-2">
+              <DuiTextarea v-model="lesson.content" label="Contenido" />
             </div>
-            <DuiInput v-model="lesson.limit_date" label="Fecha Límite" type="date" />
+            <div>
+              <div class="flex items-center space-x-2">
+                <input type="checkbox" id="is_activity" v-model="lesson.is_activity" class="dui-checkbox mr-2 h-5 w-5 text-blue-600 focus:ring-blue-500" />
+                <label for="is_activity" class="text-sm font-medium">Actividad?</label>
+              </div>
+              <DuiInput
+                v-model="lesson.limit_date"
+                label="Fecha Límite"
+                type="date"
+                :disabled="!lesson.is_activity"
+              />
+            </div>
           </div>
           <div class="flex justify-between mt-6 gap-2">
             <RouterLink :to="`/app/${siteId}/learn/courses/${courseSlug}/lessons`">
@@ -97,20 +106,42 @@ const activityOptions = activeOptions;
 const fetch = async () => {
   loading.value = true;
   try {
-    const { data } = await appi.get<LearnLesson>(`/learn/courses/${courseSlug}/lessons/${lessonSlug}`,{ headers:{site:siteId}});
-    lesson.value=data;
+    const { data } = await appi.get<LearnLesson>(`/learn/courses/${courseSlug}/lessons/${lessonSlug}`, { headers: { site: siteId } });
+    // Normalize API flags (0/1 or boolean) into accurate booleans
+    lesson.value = {
+      ...data,
+      active: !!(data.active as any),
+      is_activity: !!(data.is_activity as any),
+    } as LearnLesson;
   } catch(e){console.error(e);} finally{loading.value=false;}
 };
 
 const updateLesson = async () => {
-  saving.value=true;
-  try{
-    await appi.put(`/learn/courses/${courseSlug}/lessons/${lessonSlug}`,lesson.value,{headers:{site:siteId}});
-    fetch();
-  } catch(e) {
+  saving.value = true;
+  try {
+    // Prepare payload explicitly to include false values
+    const payload = {
+      name: lesson.value.name,
+      position: lesson.value.position,
+      type: lesson.value.type,
+      video: lesson.value.video,
+      live: lesson.value.live,
+      live_date: lesson.value.live_date,
+      description: lesson.value.description,
+      content: lesson.value.content,
+      is_activity: lesson.value.is_activity,
+      limit_date: lesson.value.limit_date,
+      active: lesson.value.active,
+    };
+    await appi.put(
+      `/learn/courses/${courseSlug}/lessons/${lessonSlug}`,
+      payload,
+      { headers: { site: siteId } }
+    );
+  } catch (e) {
     console.error(e);
-  }finally{
-    saving.value=false;
+  } finally {
+    saving.value = false;
     router.push(`/app/${siteId}/learn/courses/${courseSlug}/lessons`);
   }
 };

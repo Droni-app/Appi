@@ -24,12 +24,22 @@
           <DuiInput v-model="lesson.live" label="URL Live (opcional)" placeholder="https://..." />
           <DuiInput v-model="lesson.live_date" label="Fecha Live" type="date" />
           <DuiTextarea v-model="lesson.description" label="Descripción" rows="3" />
-          <DuiTextarea v-model="lesson.content" label="Contenido" rows="6" />
-          <div class="flex items-center space-x-2">
-            <input type="checkbox" id="is_activity" v-model="lesson.is_activity" class="dui-checkbox mr-2 h-5 w-5 text-blue-600 focus:ring-blue-500" />
-            <label for="is_activity" class="text-sm font-medium">Actividad?</label>
+          <div class="col-span-2">
+            <DuiTextarea v-model="lesson.content" label="Contenido" />
           </div>
-          <DuiInput v-model="lesson.limit_date" label="Fecha Límite" type="date" />
+          <div>
+            <div class="flex items-center space-x-2">
+              <input type="checkbox" id="is_activity" v-model="lesson.is_activity" class="dui-checkbox mr-2 h-5 w-5 text-blue-600 focus:ring-blue-500" />
+              <label for="is_activity" class="text-sm font-medium">Actividad?</label>
+            </div>
+            <DuiInput
+              v-model="lesson.limit_date"
+              label="Fecha Límite"
+              type="date"
+              :disabled="!lesson.is_activity"
+            />
+          </div>
+
         </div>
         <div class="flex justify-between mt-6 gap-2">
           <RouterLink :to="`/app/${siteId}/learn/courses/${courseSlug}/lessons`">
