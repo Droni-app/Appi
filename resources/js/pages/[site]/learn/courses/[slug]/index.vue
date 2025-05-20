@@ -5,13 +5,11 @@
       <!-- Cabecera con acciones -->
       <div class="flex flex-wrap items-center justify-between mt-8 mb-6">
         <div class="flex items-center">
-          <DuiButton
-            variant="ghost"
-            :to="`/${siteId}/learn/courses`"
-            class="mr-4"
-          >
-            <i class="mdi mdi-arrow-left"></i>
-          </DuiButton>
+          <RouterLink :to="`/app/${siteId}/learn/courses`">
+            <DuiAction variant="ghost" class="mr-4">
+              <i class="mdi mdi-arrow-left"></i>
+            </DuiAction>
+          </RouterLink>
           <h1 class="text-2xl font-bold">Editar Curso</h1>
         </div>
 
@@ -119,14 +117,10 @@
         </div>
 
         <!-- Botones de acción -->
-        <div class="flex justify-end mt-8 gap-2">
-          <DuiButton
-            type="button"
-            variant="ghost"
-            :to="`/${siteId}/learn/courses`"
-          >
-            Cancelar
-          </DuiButton>
+        <div class="flex justify-between mt-8 gap-2">
+          <RouterLink :to="`/app/${siteId}/learn/courses`">
+            <DuiAction type="button" variant="ghost">Cancelar</DuiAction>
+          </RouterLink>
           <DuiButton
             type="submit"
             color="primary"
@@ -163,7 +157,7 @@ import AttachmentInput from '@/components/AttachmentInput.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import appi from '@/utils/appi';
-import { DuiInput, DuiButton, DuiSelect, DuiTextarea } from '@dronico/droni-kit';
+import { DuiInput, DuiAction, DuiButton, DuiSelect, DuiTextarea } from '@dronico/droni-kit';
 
 const route = useRoute();
 const router = useRouter();
