@@ -156,4 +156,23 @@ declare global {
     created_at: string
     updated_at: string
   }
+  export interface LearnLesson {
+    course_id: number
+    position: number
+    type: string
+    name: string
+    slug: string
+    video: any
+    live: any
+    live_date: any
+    description: string
+    content: any
+    is_activity: boolean
+    limit_date: any
+    active: boolean
+    updated_at: string
+    created_at: string
+    id: number
+  }
+
 }

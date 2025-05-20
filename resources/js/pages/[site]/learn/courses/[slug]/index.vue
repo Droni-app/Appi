@@ -223,11 +223,8 @@ const updateCourse = async () => {
         site: siteId,
       },
     });
+    router.push(`/app/${siteId}/learn/courses`);
 
-    // Si el slug cambió, redirigir a la nueva URL
-    if (slug !== course.value.slug) {
-      router.push(`/${siteId}/learn/courses/${course.value.slug}`);
-    }
   } catch (error: any) {
     console.error('Error al actualizar el curso:', error);
 
@@ -239,6 +236,7 @@ const updateCourse = async () => {
     }
   } finally {
     saving.value = false;
+
   }
 };
 

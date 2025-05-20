@@ -95,11 +95,18 @@
               <span class="text-xs text-gray-500">
                 Creado: {{ formatDate(course.created_at) }}
               </span>
-              <RouterLink :to="`/app/${siteId}/learn/courses/${course.slug}`">
-                <DuiAction size="sm" variant="outline">
-                  <i class="mdi mdi-pencil mr-1"></i> Editar
-                </DuiAction>
-              </RouterLink>
+              <div class="flex space-x-2">
+                <RouterLink :to="`/app/${siteId}/learn/courses/${course.slug}`">
+                  <DuiAction size="sm" variant="outline">
+                    <i class="mdi mdi-pencil mr-1"></i> Editar
+                  </DuiAction>
+                </RouterLink>
+                <RouterLink :to="`/app/${siteId}/learn/courses/${course.slug}/lessons`">
+                  <DuiAction size="sm" variant="outline">
+                    <i class="mdi mdi-book-multiple mr-1"></i> Lecciones
+                  </DuiAction>
+                </RouterLink>
+              </div>
             </div>
           </div>
         </div>
